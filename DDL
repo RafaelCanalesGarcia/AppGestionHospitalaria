@@ -1,0 +1,319 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+DROP DATABASE IF EXISTS `MEIMG`;
+CREATE DATABASE IF NOT EXISTS `MEIMG` CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci;
+USE `MEIMG`;
+DROP TABLE IF EXISTS Usuario;
+CREATE TABLE IF NOT EXISTS Usuario (
+    DNI VARCHAR(20) NOT NULL PRIMARY KEY,
+    Rol VARCHAR(20) DEFAULT 'Paciente' ,
+    Contraseña VARCHAR(100) 
+)
+ENGINE = InnoDB;
+DROP TABLE IF EXISTS Paciente;
+CREATE TABLE IF NOT EXISTS Paciente (
+    Nombre VARCHAR(100) NOT NULL,
+    DNI VARCHAR(20) NOT NULL PRIMARY KEY,
+    FNacimiento DATE NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Sexo VARCHAR(20) not null,
+    Telefono VARCHAR(20) not null,
+    Seguro VARCHAR(50) not null,
+    Domicilio VARCHAR(100) not null,
+    PaisNacimiento VARCHAR(20) not null,
+    FotoPerfil VARCHAR(300),
+        FOREIGN KEY (DNI) REFERENCES Usuario(DNI)
+)
+ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS Trabajador;
+CREATE TABLE IF NOT EXISTS Trabajador (
+    Nombre VARCHAR(100) NOT NULL,
+    DNI VARCHAR(20) NOT NULL PRIMARY KEY,
+    Sexo VARCHAR(20) not null,
+    Especialidad VARCHAR(30) not null,
+    FotoPerfil VARCHAR(300),
+        FOREIGN KEY (DNI) REFERENCES Usuario(DNI)
+)
+ENGINE = InnoDB;
+
+
+
+DROP TABLE IF EXISTS Cita;
+CREATE TABLE IF NOT EXISTS Cita (
+	Codigo int auto_increment primary key,
+    Paciente VARCHAR(20) NOT NULL,
+    Trabajador VARCHAR(20) NOT NULL,
+    Hora TIME NOT NULL,
+    Fecha DATE NOT NULL,
+    Comentario VARCHAR(500),
+    FOREIGN KEY (Paciente) REFERENCES Paciente(DNI),
+    FOREIGN KEY (Trabajador) REFERENCES Trabajador(DNI),
+    UNIQUE(Fecha, Hora, Trabajador) 
+)
+ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS Agenda;
+DROP TABLE IF EXISTS Seguro;
+CREATE TABLE IF NOT EXISTS Seguro (
+Paciente VARCHAR(20) NOT NULL,
+	Numero VARCHAR(50) NOT NULL PRIMARY KEY,
+    Compañia VARCHAR(50) not null,
+    Cobertura VARCHAR(50) not null,
+    FOREIGN KEY (Paciente) REFERENCES Paciente(DNI)
+)
+ENGINE = InnoDB;
+
+DROP TABLE IF EXISTS HistoriaClinica;
+CREATE TABLE IF NOT EXISTS HistoriaClinica (
+Codigo int auto_increment primary key,
+Paciente VARCHAR(20) NOT NULL,
+Trabajador VARCHAR(20) NOT NULL,
+Imagen VARCHAR(300) default null,
+TipoPrueba VARCHAR(30) NOT NULL, 
+Diagnostico VARCHAR(300),
+Descripcion VARCHAR(500),
+Fecha DATE,
+MotivoConsulta VARCHAR(300),
+ExploracionFisica VARCHAR(300),
+Tratamiento VARCHAR(300),
+FOREIGN KEY (Paciente) REFERENCES Paciente(DNI),
+foreign key (Trabajador) REFERENCES Trabajador(DNI)
+)
+ENGINE = InnoDB;
+
+-- INSERTS para la tabla Usuario
+INSERT INTO Usuario (DNI, Rol, Contraseña) VALUES
+('TRAB001', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB002', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB003', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB004', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB005', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB006', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB007', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB008', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB009', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB010', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB011', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB012', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB013', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB014', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB015', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB016', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB017', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB018', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB019', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB020', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB021', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB022', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB023', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB024', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB025', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB026', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('TRAB027', 'Trabajador', 'U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC001','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC002','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC003','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC004','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC005','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC006','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC007','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC008','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC009','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC010','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC011','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC012','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC013','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC014','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC015','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.'),
+('PAC016','Paciente','U92hzxtNokFgpVj5gOQxSbn4yP5nx6U+fmisbZ7a7hQ=.');
+
+INSERT INTO Paciente(Nombre,DNI,FNacimiento,Email,Sexo, Telefono,Seguro,Domicilio,PaisNacimiento,FotoPerfil) values
+('Rafael Canales Garcia','PAC001','1994-12-12','rafa_arenal_13@hotmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Pere Mateu Rodriguez','PAC002','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Andy Lopez Rey','PAC003','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Ainara Sanchez Urtado','PAC004','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Hugo Paciente Cero','PAC005','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Toni De La Mancha','PAC006','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Fernando Alonso Garcia','PAC007','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Sandra Gonzalez Serra','PAC008','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Karina Garcia Herrera','PAC009','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Paula Alberti Lopez','PAC010','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Alfonso Garcia Hernandez','PAC011','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Paula Vidal Florit','PAC012','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Yolanda Cortez Martin','PAC013','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Laura Utrera Pamplona','PAC014','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Rafael Rogriguez Cordoba','PAC015','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg'),
+('Antonia Vaquer Perez','PAC016','1994-12-12','rafa@gmail.com','Hombre','680680680','12345678901234567890','C/ Sureda', 'España','Sirenita.jpg');
+
+-- INSERTS para la tabla Trabajador
+INSERT INTO Trabajador (Nombre, DNI, Sexo, Especialidad, FotoPerfil) VALUES
+('María Antonia Ruiz Castillo', 'TRAB001', 'Mujer', 'Ginecologia', NULL),
+('María Fernández Figueredo', 'TRAB002', 'Mujer', 'Ginecologia', NULL),
+('Francisco Márquez Maraver', 'TRAB003', 'Hombre', 'Ginecologia', NULL),
+('Luis Redondo Verge', 'TRAB004', 'Hombre', 'Neurologia', NULL),
+('Carmen González Oria', 'TRAB005', 'Mujer', 'Neurologia', NULL),
+('Hernando Pérez Díaz', 'TRAB006', 'Hombre', 'Neurologia', NULL),
+('María Calle', 'TRAB007', 'Mujer', 'Digestivo', NULL),
+('Leidy Siachoque', 'TRAB008', 'Mujer', 'Digestivo', NULL),
+('Ana María Londoño', 'TRAB009', 'Mujer', 'Digestivo', NULL),
+('Cristina Yang', 'TRAB010', 'Mujer', 'Cardiologia', NULL),
+('Mina Okafor', 'TRAB011', 'Mujer', 'Cardiologia', NULL),
+('AJ. Austin', 'TRAB012', 'Hombre', 'Cardiologia', NULL),
+('Conrad Hawking', 'TRAB013', 'Hombre', 'Traumatologia', NULL),
+('Owen Hunt', 'TRAB014', 'Hombre', 'Traumatologia', NULL),
+('Javier Revuelta Romo', 'TRAB015', 'Hombre', 'Traumatologia', NULL),
+('Luis Fernando Casanova', 'TRAB016', 'Hombre', 'RehabilitacionMaxilofacial', NULL),
+('Andrés Ariza', 'TRAB017', 'Hombre', 'RehabilitacionMaxilofacial', NULL),
+('Carmen Marta Pérez Cordero', 'TRAB018', 'Mujer', 'RehabilitacionMaxilofacial', NULL),
+('Joaquín Reyes Andrade', 'TRAB019', 'Hombre', 'Pediatria', NULL),
+('Paula Jiménez Cerrato', 'TRAB020', 'Mujer', 'Pediatria', NULL),
+('Emma López Rubio', 'TRAB021', 'Mujer', 'Pediatria', NULL),
+('Federico López Rodríguez', 'TRAB022', 'Hombre', 'Psiquiatria', NULL),
+('Miguel Ponce López', 'TRAB023', 'Hombre', 'Psiquiatria', NULL),
+('María Gabriela Parano', 'TRAB024', 'Mujer', 'Psiquiatria', NULL),
+('María del Carmen Beato Zambrano', 'TRAB025', 'Mujer', 'Oncologia', NULL),
+('Joan Carles Galcerín', 'TRAB026', 'Hombre', 'Oncologia', NULL),
+('Xavier González Farra', 'TRAB027', 'Hombre', 'Oncologia', NULL);
+
+INSERT INTO Cita (Paciente, Trabajador, Hora, Fecha) VALUES
+-- Citas para Carlos Pérez
+('PAC001', 'TRAB001', '8:00', '2025-02-05','Revision general de la zona del útero'),  -- Ginecología
+('PAC001', 'TRAB001', '10:15', '2025-02-07','Valoración de herida y curas'), 
+('PAC001', 'TRAB001', '14:45', '2025-02-09','Revision de sutura'),
+('PAC001', 'TRAB002', '8:00', '2025-02-05','Comentario de ejemplo'),  -- Ginecología
+('PAC001', 'TRAB002', '10:15', '2025-02-08','Vacunación'), 
+('PAC001', 'TRAB003', '14:45', '2025-02-09','Pepito de los palotes'),
+
+-- Citas para Lucía Fernández
+('PAC001', 'TRAB008', '9:30', '2025-02-05','La estatua de la libertad'),  -- Digestivo
+('PAC001', 'TRAB008', '11:45', '2025-02-08','El monte fuji esta en japon'),
+('PAC001', 'TRAB009', '16:15', '2025-02-09','No fui de viaje a vietnam por el covid'),
+
+-- Citas para Javier López
+('PAC001', 'TRAB019', '12:30', '2025-02-05','Extraccion de férula'), -- Pediatría
+('PAC001', 'TRAB021', '8:45', '2025-02-07','Extraccion de sangre para analizar'),
+('PAC001', 'TRAB020', '13:15', '2025-02-09','Quitar el papiloma plantar'),
+
+('PAC001', 'TRAB015', '8:00', '2025-02-05','Control de verruga'), 
+('PAC001', 'TRAB015', '10:15', '2025-02-07',''), 
+('PAC001', 'TRAB015', '14:45', '2025-02-09','Hoy duermo en el sofa YUJUUU'),
+('PAC001', 'TRAB015', '8:00', '2025-02-08','Lo importante es no hacer caso a tu mujer'),  
+('PAC001', 'TRAB015', '11:00', '2025-02-07','Aqui va la informacion que quieras'), 
+('PAC001', 'TRAB015', '15:30', '2025-02-09','Otro comentario de prueba');
+use meimg;
+insert into Seguro values ('PAC001','12344321123','Mapfre','Total');
+INSERT INTO HistoriaClinica (Paciente, Trabajador, Imagen, TipoPrueba, Diagnostico, Descripcion, Fecha, MotivoConsulta, ExploracionFisica, Tratamiento) VALUES
+('PAC001', 'TRAB001', 'radiografia.jpg', 'Radiografía', 'Neumonía leve', 'Inflamación en los pulmones con presencia de líquido.', '2024-01-05', 'Tos persistente y fiebre', 'Crepitantes en base pulmonar derecha', 'Antibióticos y reposo'),
+
+('PAC001', 'TRAB002', 'analisisdesangre.jpg', 'Análisis de Sangre', 'Anemia ferropénica', 'Nivel bajo de hemoglobina y ferritina en sangre.', '2024-01-10', 'Fatiga y debilidad', 'Palidez en mucosas y conjuntivas', 'Suplementos de hierro'),
+
+('PAC001', 'TRAB003', 'ecografia.jpg', 'Ecografía', 'Colelitiasis', 'Presencia de cálculos en la vesícula biliar.', '2024-01-15', 'Dolor abdominal y náuseas', 'Dolor en hipocondrio derecho a la palpación', 'Dieta baja en grasas y seguimiento'),
+
+('PAC001', 'TRAB004', 'electrocardiograma.jpg', 'Electrocardiograma', 'Taquicardia sinusal', 'Frecuencia cardíaca elevada pero ritmo normal.', '2024-02-01', 'Palpitaciones y ansiedad', 'Frecuencia cardíaca de 110 lpm', 'Beta bloqueadores y control del estrés'),
+
+('PAC001', 'TRAB005', 'tomografia.jpg', 'Tomografía', 'Migraña crónica', 'No se observan alteraciones estructurales.', '2024-02-07', 'Dolor de cabeza recurrente', 'Sin signos neurológicos focales', 'Triptanes y control del estrés'),
+
+('PAC001', 'TRAB006', 'endoscopia.jpg', 'Endoscopía', 'Gastritis erosiva', 'Irritación de la mucosa gástrica con pequeñas erosiones.', '2024-02-15', 'Dolor epigástrico y acidez', 'Dolor a la palpación epigástrica', 'Inhibidores de la bomba de protones'),
+
+('PAC001', 'TRAB007', 'resonanciamagnetica.jpg', 'Resonancia Magnética', 'Hernia discal L4-L5', 'Protrusión del disco intervertebral con compresión radicular.', '2024-03-03', 'Dolor lumbar y ciática', 'Reflejo aquileo disminuido en pierna derecha', 'Fisioterapia y analgésicos'),
+
+('PAC001', 'TRAB008', NULL, 'Prueba de Función Hepática', 'Hígado graso', 'Elevación de transaminasas con ecografía compatible.', '2024-03-12', 'Fatiga y malestar abdominal', 'Hepatomegalia leve', 'Dieta saludable y ejercicio'),
+
+('PAC001', 'TRAB009', 'dermatoscopia.jpg', 'Dermatoscopia', 'Nevus displásico', 'Lunar atípico con bordes irregulares.', '2024-03-20', 'Lunar con cambio de coloración', 'Lunar de 8 mm con asimetría', 'Biopsia para estudio'),
+
+('PAC001', 'TRAB010', NULL, 'Análisis de Orina', 'Infección urinaria', 'Presencia de bacterias y leucocitos en orina.', '2024-04-02', 'Dolor al orinar y fiebre', 'Dolor en fosa renal derecha', 'Antibióticos'),
+
+('PAC001', 'TRAB011', 'ecocardiograma.jpg', 'Ecocardiograma', 'Hipertrofia ventricular izquierda', 'Aumento del grosor de la pared ventricular.', '2024-04-15', 'Fatiga y disnea', 'Ruidos cardíacos normales', 'Control de presión arterial y medicación'),
+
+('PAC001', 'TRAB012', 'espirometria.jpg', 'Espirometría', 'Asma bronquial', 'Disminución del volumen espiratorio forzado.', '2024-04-20', 'Dificultad para respirar', 'Sibilancias en la auscultación pulmonar', 'Broncodilatadores y control ambiental'),
+
+('PAC001', 'TRAB013', 'colonoscopia.jpg', 'Colonoscopía', 'Pólipos colónicos', 'Presencia de dos pólipos de 5 mm.', '2024-05-05', 'Dolor abdominal y cambios en las heces', 'Sin signos de obstrucción', 'Resección endoscópica'),
+
+('PAC001', 'TRAB014', NULL, 'Prueba de Esfuerzo', 'Buena tolerancia al ejercicio', 'Sin signos de isquemia miocárdica.', '2024-05-12', 'Evaluación por antecedentes familiares', 'Frecuencia cardíaca adecuada al esfuerzo', 'Recomendaciones de ejercicio'),
+
+('PAC001', 'TRAB015', 'radiografiafalange.jpg', 'Radiografía', 'Fractura de falange', 'Fractura no desplazada en la tercera falange del dedo índice.', '2024-05-20', 'Dolor y deformidad tras traumatismo', 'Edema y sensibilidad en la falange afectada', 'Inmovilización con férula y analgésicos');
+
+UPDATE trabajador
+SET FotoPerfil = 'TRA001.jpg'
+WHERE DNI = 'TRAB001';
+UPDATE trabajador
+SET FotoPerfil = 'TRA002.jpg'
+WHERE DNI = 'TRAB002';
+UPDATE trabajador
+SET FotoPerfil = 'TRA003.jpg'
+WHERE DNI = 'TRAB003';
+UPDATE trabajador
+SET FotoPerfil = 'TRA004.jpg'
+WHERE DNI = 'TRAB004';
+UPDATE trabajador
+SET FotoPerfil ='TRA005.jpg'
+WHERE DNI = 'TRAB005';
+UPDATE trabajador
+SET FotoPerfil = 'TRA006.jpg'
+WHERE DNI = 'TRAB006';
+UPDATE trabajador
+SET FotoPerfil = 'TRA007.jpg'
+WHERE DNI = 'TRAB007';
+UPDATE trabajador
+SET FotoPerfil = 'TRA008.jpg'
+WHERE DNI = 'TRAB008';
+UPDATE trabajador
+SET FotoPerfil = 'TRA009.jpg'
+WHERE DNI = 'TRAB009';
+UPDATE trabajador
+SET FotoPerfil = 'TRA010.jpg'
+WHERE DNI = 'TRAB010';
+UPDATE trabajador
+SET FotoPerfil = 'TRA011.jpg'
+WHERE DNI = 'TRAB011';
+UPDATE trabajador
+SET FotoPerfil = 'TRA012.jpg'
+WHERE DNI = 'TRAB012';
+UPDATE trabajador
+SET FotoPerfil = 'TRA013.jpg'
+WHERE DNI = 'TRAB013';
+UPDATE trabajador
+SET FotoPerfil = 'TRA014.jpg'
+WHERE DNI = 'TRAB014';
+UPDATE trabajador
+SET FotoPerfil = 'TRA015.jpg'
+WHERE DNI = 'TRAB015';
+UPDATE trabajador
+SET FotoPerfil = 'TRA016.jpg'
+WHERE DNI = 'TRAB016';
+UPDATE trabajador
+SET FotoPerfil = 'TRA017.jpg'
+WHERE DNI = 'TRAB017';
+UPDATE trabajador
+SET FotoPerfil = 'TRA018.jpg'
+WHERE DNI = 'TRAB018';
+UPDATE trabajador
+SET FotoPerfil = 'TRA019.jpg'
+WHERE DNI = 'TRAB019';
+UPDATE trabajador
+SET FotoPerfil = 'TRA020.jpg'
+WHERE DNI = 'TRAB020';
+UPDATE trabajador
+SET FotoPerfil = 'TRA021.jpg'
+WHERE DNI = 'TRAB021';
+UPDATE trabajador
+SET FotoPerfil = 'TRA022.jpg'
+WHERE DNI = 'TRAB022';
+UPDATE trabajador
+SET FotoPerfil = 'TRA023.jpg'
+WHERE DNI = 'TRAB023';
+UPDATE trabajador
+SET FotoPerfil = 'TRA024.jpg'
+WHERE DNI = 'TRAB024';
+UPDATE trabajador
+SET FotoPerfil = 'TRA025.jpg'
+WHERE DNI = 'TRAB025';
+UPDATE trabajador
+SET FotoPerfil = 'TRA026.jpg'
+WHERE DNI = 'TRAB026';
+UPDATE trabajador
+SET FotoPerfil = 'TRA027.jpg'
+WHERE DNI = 'TRAB027';
